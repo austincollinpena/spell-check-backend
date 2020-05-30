@@ -1,0 +1,35 @@
+Harden Redis
+
+https://redis.io/topics/quickstart
+
+
+Ask how the implementation of async works for ariadne. Let's say there's a sleep function, does it have to be asyncio.sleep?
+
+TODO: Fake headers
+
+TODO: Use this for spell checking? https://docs.python.org/3/library/asyncio-eventloop.html#executing-code-in-thread-or-process-pools
+
+loop.run_in_executor
+
+TODO: Use Semaphore to limit open requests https://stackoverflow.com/questions/40836800/python-asyncio-semaphore-in-async-await-function
+
+https://docs.python.org/3/library/asyncio-task.html#creating-tasks
+
+No need to use a future thing, run gather
+
+Check if a member exists Redis:
+
+Here I've added three elements to my set and told Redis to return all the elements. As you can see they are not sorted -- Redis is free to return the elements in any order at every call, since there is no contract with the user about element ordering.
+
+Redis has commands to test for membership. For example, checking if an element exists: https://redis.io/topics/data-types-intro
+
+> sismember myset 3
+(integer) 1
+> sismember myset 30
+(integer) 0
+
+
+Redis Pub Sub
+https://redis.io/topics/pubsub
+
+
