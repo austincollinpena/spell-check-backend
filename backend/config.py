@@ -40,3 +40,11 @@ DB_RETRY_LIMIT = config("DB_RETRY_LIMIT", cast=int, default=1)
 DB_RETRY_INTERVAL = config("DB_RETRY_INTERVAL", cast=int, default=1)
 
 SECRET_KEY = config("SECRET_KEY", cast=Secret, default=None)
+
+# Redis
+
+REDIS_SSL = config('REDIS_SSL', None)
+REDIS_HOST = config('REDIS_HOST', None)
+REDIS_PORT = config('REDIS_PORT', cast=int, default=None)
+REDIS_PASSWORD = config('REDIS_PASSWORD', cast=Secret)
+

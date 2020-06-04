@@ -1,4 +1,4 @@
-from ariadne import gql, MutationType, load_schema_from_path
+from ariadne import load_schema_from_path
 import os
 
 base_query_type = load_schema_from_path(
@@ -7,4 +7,7 @@ base_query_type = load_schema_from_path(
 base_mutation_type = load_schema_from_path(
     os.path.join(os.getcwd(), "./backend/utils/graphql/mutation_type.graphql"))
 
-root_graphql_types = [base_query_type, base_mutation_type]
+base_subscription_type = load_schema_from_path(
+    os.path.join(os.getcwd(), "./backend/utils/graphql/subscription_type.graphql"))
+
+root_graphql_types = [base_query_type, base_mutation_type, base_subscription_type]
