@@ -24,21 +24,24 @@ from starlette.background import BackgroundTask
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
+from starlette.middleware.cors import CORSMiddleware
 
 
 class BackgroundTaskMiddleware(BaseHTTPMiddleware):
     async def dispatch(
             self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
-        # Available as info.context["request"].state.background
-        request.state.background = BackgroundTask()
+        request.state.background = None
         response = await call_next(request)
-        response.background = request.state.background
+        if request.state.background:
+            response.background = request.state.background
         return response
 
 
 middleware = [
-    Middleware(BackgroundTaskMiddleware)
+    Middleware(BackgroundTaskMiddleware),
+    Middleware(CORSMiddleware, allow_origins=['http://localhost:3000'], allow_methods=['*'], allow_headers=["*"],
+               allow_credentials=[True])
 ]
 
 app = Starlette(debug=True, middleware=middleware)

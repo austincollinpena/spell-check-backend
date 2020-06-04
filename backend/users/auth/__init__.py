@@ -1,7 +1,6 @@
 # Following these docs: https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
 
 from passlib.context import CryptContext
-from jwt import PyJWTError
 from backend.users.models import User
 from datetime import datetime, timedelta
 import jwt
