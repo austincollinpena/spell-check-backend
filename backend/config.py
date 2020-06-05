@@ -43,8 +43,9 @@ SECRET_KEY = config("SECRET_KEY", cast=Secret, default=None)
 
 # Redis
 
-REDIS_SSL = config('REDIS_SSL', None)
-REDIS_HOST = config('REDIS_HOST', None)
+REDIS_SSL = config('REDIS_SSL', default=None)
+REDIS_HOST = config('REDIS_HOST', default=None)
 REDIS_PORT = config('REDIS_PORT', cast=int, default=None)
-REDIS_PASSWORD = config('REDIS_PASSWORD', cast=Secret)
+REDIS_PASSWORD = config('REDIS_PASSWORD', cast=Secret, default=None)
 
+PROXY_LIST = config('PROXIES', default=None)

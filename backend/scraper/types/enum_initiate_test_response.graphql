@@ -1,0 +1,6 @@
+enum urlResponse{
+    SUCCESS
+    INVALID_URL
+    BLACKLIST
+    CURRENTLY_QUEUED
+}

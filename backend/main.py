@@ -6,6 +6,7 @@ from ariadne.contrib.tracing.apollotracing import ApolloTracingExtension
 
 # Local Packages
 from backend.db import db as gino_db
+from backend.utils.redis_client.seed_redis import seed_redis, seed_redis_site_blacklist
 
 # For debugging:
 import uvicorn
@@ -17,9 +18,10 @@ from backend.utils.graphql.mutation_type import mutation as root_mutation
 from backend.utils.graphql.subscription_type import subscription as root_subscription
 from backend.utils.graphql import root_graphql_types
 from backend.users import user_type_defs
+from backend.scraper import scraper_type_defs
 
 schema = make_executable_schema(
-    [*root_graphql_types, *user_type_defs], root_query, root_mutation, root_subscription)
+    [*root_graphql_types, *user_type_defs, *scraper_type_defs], root_query, root_mutation, root_subscription)
 
 from starlette.background import BackgroundTask
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
@@ -45,8 +47,9 @@ middleware = [
                allow_credentials=[True])
 ]
 
-app = Starlette(debug=True, middleware=middleware)
+app = Starlette(debug=True, middleware=middleware, on_startup=[seed_redis, seed_redis_site_blacklist])
 gino_db.init_app(app)
+
 # load_modules(app)
 app.mount("/graphql", GraphQL(schema, debug=True,
                               extensions=[ApolloTracingExtension]))

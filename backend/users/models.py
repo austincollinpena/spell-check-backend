@@ -1,4 +1,4 @@
-# Docs: https://python-gino.org/docs/en/master/how-to/schema.html#gino-orm
+# # Docs: https://python-gino.org/docs/en/master/how-to/schema.html#gino-orm
 from backend.db import db
 import bcrypt
 from passlib.context import CryptContext
