@@ -15,6 +15,10 @@ def seed_redis(override=False):
 
     if values < 1500000 or override:
         redis_client.delete('dict:all')
+        # all_english_words = load_words(
+        #     path.join(getcwd(), "./backend/utils/data/wlist_match2.txt")).union(
+        #     load_words(path.join(getcwd(), "./backend/utils/data/wlist_match1.txt")).union(
+        #         load_words(path.join(getcwd(), "./backend/utils/data/personal_whitelist.txt"))))
         all_english_words = load_words(
             path.join(getcwd(), "./backend/utils/data/wlist_match2.txt")).union(
             load_words(path.join(getcwd(), "./backend/utils/data/wlist_match1.txt")).union(

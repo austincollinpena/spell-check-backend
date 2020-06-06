@@ -15,10 +15,10 @@ async def initiate_test(object, info, url: str):
         netloc = netloc.lstrip('www.')
     if redis_client.sismember("siteblacklist", netloc):
         return "BLACKLIST"
-    if redis_client.sismember('allsites:queue', url):
+    if redis_client.sismember('allsites:queue', netloc):
         return "CURRENTLY_QUEUED"
     else:
-        BackgroundTask(await scrape(netloc))
+        BackgroundTask(await scrape(url, netloc))
         return "SUCCESS"
 
 # https://www.ariadnegraphql.org/docs/enums

@@ -15,6 +15,5 @@ def get_text(soup):
         return RE_SPACES.sub('  ', text)
 
     visible_text = visible_texts()
-    words = visible_text.lower()
 
-    return [*words.split()]
+    return [*visible_text.split()]
