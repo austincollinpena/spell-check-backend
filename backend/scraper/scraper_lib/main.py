@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from spellchecker import SpellChecker
 from os import path, getcwd
 import re
+import json
 
 from backend.scraper.scraper_lib.random_proxy import random_proxy
 from .get_text import get_text
@@ -19,7 +20,7 @@ async def parse_page(redis_client, url: str, session, netloc: str, spell_checker
     header = Headers()
     assert spell_checker['pinterest'] == True
     async with session.get(url, headers=header.generate(), ssl=False, allow_redirects=True,
-                           proxy=random_proxy()) as resp:
+                               proxy=random_proxy()) as resp:
         if resp.status in [403, 429]:
             number_of_errors = redis_client.hincrby('4xxerrors', url, 1)
             if number_of_errors > 3:
@@ -33,10 +34,12 @@ async def parse_page(redis_client, url: str, session, netloc: str, spell_checker
         wrong_words_set = spell_checker.unknown(visible_words_strip_punctuation)
         # TODO get additional URL's
         wrong_words_set_clean = {word for word in wrong_words_set if not ""}
-        add_set_to_redis(netloc, url, visible_words_with_punctuation, wrong_words_set, spell_checker, redis_client)
+
+
+        add_set_to_redis(netloc, url, visible_words_with_punctuation, wrong_words_set_clean, spell_checker, redis_client)
         # TODO: Pop from allsites:queue eventually
 
-    await asyncio.sleep(1)
+        await asyncio.sleep(1)
 
 
 async def scrape(url: str, netloc: str):
