@@ -1,4 +1,4 @@
-from .random_proxy import random_proxy
+from ..random_proxy import random_proxy
 
 
 def test_random_proxy():

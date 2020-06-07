@@ -13,3 +13,5 @@ google
 website
 equipo
 recaptcha
+regex
+literals

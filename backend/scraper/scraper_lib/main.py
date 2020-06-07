@@ -20,24 +20,25 @@ async def parse_page(redis_client, url: str, session, netloc: str, spell_checker
     header = Headers()
     assert spell_checker['pinterest'] == True
     async with session.get(url, headers=header.generate(), ssl=False, allow_redirects=True,
-                               proxy=random_proxy()) as resp:
+                           proxy=random_proxy()) as resp:
         if resp.status in [403, 429]:
             number_of_errors = redis_client.hincrby('4xxerrors', url, 1)
             if number_of_errors > 3:
                 redis_client.srem(f'active:{netloc}')
-        print('yeet?')
         soup = BeautifulSoup(await resp.text(), "html.parser")
         visible_words_with_punctuation = get_text(soup)
         # TODO
-        pattern = re.compile('[\W_]+', re.UNICODE)
+        pattern = re.compile(r'[\W_]+', re.UNICODE)
         visible_words_strip_punctuation = {pattern.sub('', word) for word in visible_words_with_punctuation}
         wrong_words_set = spell_checker.unknown(visible_words_strip_punctuation)
         # TODO get additional URL's
         wrong_words_set_clean = {word for word in wrong_words_set if not ""}
 
-
-        add_set_to_redis(netloc, url, visible_words_with_punctuation, wrong_words_set_clean, spell_checker, redis_client)
+        add_set_to_redis(netloc, url, visible_words_with_punctuation, wrong_words_set_clean, spell_checker,
+                         redis_client)
         # TODO: Pop from allsites:queue eventually
+        # TODO: IT not being in the queue is what stops the subscription
+
 
         await asyncio.sleep(1)
 

@@ -47,7 +47,7 @@ middleware = [
                allow_credentials=[True])
 ]
 
-app = Starlette(debug=True, middleware=middleware, on_startup=[seed_redis, seed_redis_site_blacklist])
+app = Starlette(debug=True, middleware=middleware, on_startup=[seed_redis_site_blacklist])
 gino_db.init_app(app)
 
 # load_modules(app)
