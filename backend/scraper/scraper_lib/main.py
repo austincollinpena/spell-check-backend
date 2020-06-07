@@ -38,7 +38,7 @@ async def parse_page(redis_client, url: str, session, netloc: str, spell_checker
                          redis_client)
         # TODO: Pop from allsites:queue eventually
         # TODO: IT not being in the queue is what stops the subscription
-
+        # TODO: Elminate the keys when you're done with them
 
         await asyncio.sleep(1)
 
@@ -47,14 +47,14 @@ async def scrape(url: str, netloc: str):
     redis_client.sadd(f'active:{netloc}', url)  # 1 2
     redis_client.sadd(f'all:{url}', url)  # 1 2 3 4 5
     # TODO: Re add
-    # redis_client.sadd(f'allsites:queue', netloc)
-    redis_pub_sub = redis_client.pubsub()
+    redis_client.sadd(f'allsites:queue', netloc)
 
     wrong_words = load_words(path.join(getcwd(), "./backend/utils/data/these_words_are_wrong.txt"))
     correct_words = load_words(path.join(getcwd(), "./backend/utils/data/these_words_are_right.txt"))
     spell = SpellChecker()
     spell.word_frequency.load_words([*correct_words])
     spell.word_frequency.remove_words([*wrong_words])
+    print('dirty dog im a dirty dog')
 
     async with aiohttp.ClientSession(
             connector=aiohttp.TCPConnector(keepalive_timeout=10, limit=1, verify_ssl=False)) as open_session:

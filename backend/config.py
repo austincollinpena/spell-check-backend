@@ -49,3 +49,5 @@ REDIS_PORT = config('REDIS_PORT', cast=int, default=None)
 REDIS_PASSWORD = config('REDIS_PASSWORD', cast=Secret, default=None)
 
 PROXY_LIST = config('PROXIES', default=None)
+
+REDIS_URL = config('REDIS_URL', default=f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}')

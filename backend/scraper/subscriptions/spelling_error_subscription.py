@@ -8,9 +8,9 @@ from urllib.parse import urlparse
 async def spelling_error_generator(obj, info, website):
     p = redis_client.pubsub()
     a = urlparse(website).netloc
-    # p.subscribe(f'{a}:errors')
+    p.subscribe(f'{a}:errors')
     # For debugging
-    p.subscribe(f'debug')
+    # p.subscribe(f'debug')
     while True:
         message = p.get_message()
         await asyncio.sleep(.1)

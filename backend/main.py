@@ -6,7 +6,8 @@ from ariadne.contrib.tracing.apollotracing import ApolloTracingExtension
 
 # Local Packages
 from backend.db import db as gino_db
-from backend.utils.redis_client.seed_redis import seed_redis, seed_redis_site_blacklist
+from backend.utils.redis_client.seed_redis import seed_redis_site_blacklist
+from backend.utils.celery import celery
 
 # For debugging:
 import uvicorn
@@ -58,8 +59,7 @@ app.mount("/graphql", GraphQL(schema, debug=True,
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0', port=8000)
 
-# TODO: Auth
-# https://spectrum.chat/ariadne/general/how-to-implement-a-very-simple-auth-layer~80b7d221-6d0c-4df8-800a-e4cc6a07c99d
-# Session middlewere
+# TODO: When running celery from docker don't do it in a dumb way
 
-# TODO: CORS middleware and more
+# celery worker --app=backend.main.app --pool=solo --loglevel=INFO
+# celery -A backend.utils.celery worker --pool=solo --loglevel=INFO
