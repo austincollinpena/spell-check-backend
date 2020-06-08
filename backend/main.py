@@ -7,7 +7,7 @@ from ariadne.contrib.tracing.apollotracing import ApolloTracingExtension
 # Local Packages
 from backend.db import db as gino_db
 from backend.utils.redis_client.seed_redis import seed_redis_site_blacklist
-from backend.utils.celery import celery
+from backend.utils.celery import not_celery
 
 # For debugging:
 import uvicorn
@@ -63,3 +63,5 @@ if __name__ == "__main__":
 
 # celery worker --app=backend.main.app --pool=solo --loglevel=INFO
 # celery -A backend.utils.celery.celery worker --pool=solo --loglevel=INFO
+
+# celery -A backend worker --app=backend.utils.celery_worker.not_celery:app --pool=solo --loglevel=INFO

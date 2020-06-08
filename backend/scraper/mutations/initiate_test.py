@@ -2,7 +2,7 @@ from backend.utils.graphql.mutation_type import mutation
 from backend.utils.redis_client.redis_client import redis_client
 from validator_collection import is_url
 from urllib.parse import urlparse
-from backend.utils.celery.celery import call_scraper
+from backend.utils.celery_worker.not_celery import call_scraper
 from starlette.background import BackgroundTask
 from backend.scraper.scraper_lib.main import scrape
 import time
