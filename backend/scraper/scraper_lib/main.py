@@ -64,7 +64,10 @@ async def scrape(url: str, netloc: str):
             task = asyncio.create_task(
                 parse_page(redis_client, active_url.decode('utf-8'), open_session, netloc=netloc,
                            spell_checker=spell))
+            # TODO: Why can't I just call create_task? Why do I need ensure future?
+            # TODO: what does ensure future return?
             new_tasks.append(task)
+
         # Run the initial tasks
         await asyncio.gather(*new_tasks)
 

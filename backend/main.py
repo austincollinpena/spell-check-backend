@@ -62,4 +62,4 @@ if __name__ == "__main__":
 # TODO: When running celery from docker don't do it in a dumb way
 
 # celery worker --app=backend.main.app --pool=solo --loglevel=INFO
-# celery -A backend.utils.celery worker --pool=solo --loglevel=INFO
+# celery -A backend.utils.celery.celery worker --pool=solo --loglevel=INFO

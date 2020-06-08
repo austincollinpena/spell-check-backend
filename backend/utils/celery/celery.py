@@ -20,7 +20,7 @@ if __name__ == '__main__':
     celery.start()
 
 
-# TODO: Celery forget!
-@app.task
+# TODO: Celery forget! check the keys
+@celery.task
 def call_scraper(url, netloc):
     asyncio.ensure_future(scrape(url, netloc))
