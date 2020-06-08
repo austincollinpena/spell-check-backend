@@ -24,9 +24,6 @@ services:
     image: alpine
     command: sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
     privileged: true
-  celery:
-    command: celery -A proj worker -l info
-    volumes:
 
 
 # networking for the Redis container

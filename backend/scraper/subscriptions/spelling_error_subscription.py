@@ -7,8 +7,9 @@ from urllib.parse import urlparse
 @subscription.source('spellingError')
 async def spelling_error_generator(obj, info, website):
     p = redis_client.pubsub()
-    a = urlparse(website).netloc
-    p.subscribe(f'{a}:errors')
+    netloc = urlparse(website).netloc
+    p.subscribe(f'{netloc}:errors')
+    print(f'{netloc}:errors')
     # For debugging
     # p.subscribe(f'debug')
     while True:

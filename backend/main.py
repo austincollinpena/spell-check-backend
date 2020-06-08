@@ -7,7 +7,6 @@ from ariadne.contrib.tracing.apollotracing import ApolloTracingExtension
 # Local Packages
 from backend.db import db as gino_db
 from backend.utils.redis_client.seed_redis import seed_redis_site_blacklist
-from backend.utils.celery import not_celery
 
 # For debugging:
 import uvicorn
@@ -57,11 +56,16 @@ app.mount("/graphql", GraphQL(schema, debug=True,
 
 # For debugging
 if __name__ == "__main__":
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=8002)
 
 # TODO: When running celery from docker don't do it in a dumb way
-
+# TODO: https://www.uvicorn.org/settings/ - deploy correctly
 # celery worker --app=backend.main.app --pool=solo --loglevel=INFO
 # celery -A backend.utils.celery.celery worker --pool=solo --loglevel=INFO
 
-# celery -A backend worker --app=backend.utils.celery_worker.not_celery:app --pool=solo --loglevel=INFO
+# celery -A backend worker --app=backend.utils.celery_worker.not_celery:celery_app --pool=solo --loglevel=INFO
+
+# celery -A backend.utils.celery_worker.not_celery worker --pool=solo
+# celery -A backend worker backend.utils.celery_worker.not_celery --pool=solo
+
+# uvicorn backend.main:app --reload --port 8002

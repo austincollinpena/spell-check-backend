@@ -30,6 +30,9 @@ def seed_redis(override=False):
 
 
 def seed_redis_site_blacklist(override=False):
+    from backend.celery_worker import hello
+    print('----------------------------------------------------------------------------')
+    print(hello.delay())
     values = redis_client.scard('siteblacklist')
     if values < 2000 or override:
         all_sites = load_words(path.join(getcwd(), "./backend/utils/data/wlist_match2.txt"))
