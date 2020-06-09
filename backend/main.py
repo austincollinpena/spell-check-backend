@@ -60,12 +60,6 @@ if __name__ == "__main__":
 
 # TODO: When running celery from docker don't do it in a dumb way
 # TODO: https://www.uvicorn.org/settings/ - deploy correctly
-# celery worker --app=backend.main.app --pool=solo --loglevel=INFO
-# celery -A backend.utils.celery.celery worker --pool=solo --loglevel=INFO
 
-# celery -A backend worker --app=backend.utils.celery_worker.not_celery:celery_app --pool=solo --loglevel=INFO
-
-# celery -A backend.utils.celery_worker.not_celery worker --pool=solo
-# celery -A backend worker backend.utils.celery_worker.not_celery --pool=solo
 
 # uvicorn backend.main:app --reload --port 8002

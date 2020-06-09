@@ -4,7 +4,8 @@ from celery import Celery
 from backend import config
 from backend.scraper.scraper_lib.main import scrape
 
-celery_worker = Celery('celery_worker', broker=config.REDIS_URL, include=['backend.scraper.main'])
+celery_worker = Celery('backend.utils.celery_worker_module.celery_worker', broker=config.REDIS_URL,
+                       include=['backend.scraper.main', ])
 
 celery_worker.conf.update(
     result_expires=3600

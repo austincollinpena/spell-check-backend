@@ -10,6 +10,8 @@ from os import path, getcwd
 import re
 import json
 
+# from backend.utils.celery_worker_module.celery_worker import celery_worker
+from backend.celery_worker import celery_worker
 from backend.scraper.scraper_lib.random_proxy import random_proxy
 from .get_text import get_text
 from backend.utils.redis_client.load_words import load_words
@@ -43,6 +45,7 @@ async def parse_page(redis_client, url: str, session, netloc: str, spell_checker
         await asyncio.sleep(1)
 
 
+@celery_worker.task
 async def scrape(url: str, netloc: str):
     redis_client.sadd(f'active:{netloc}', url)  # 1 2
     redis_client.sadd(f'all:{url}', url)  # 1 2 3 4 5
