@@ -13,27 +13,20 @@ def load_words(file: str):
 def seed_redis(override=False):
     values = redis_client.scard('dict:all')
 
-    if values < 1500000 or override:
+    if values < 230000 or override:
         redis_client.delete('dict:all')
-        # all_english_words = load_words(
-        #     path.join(getcwd(), "./backend/utils/data/wlist_match2.txt")).union(
-        #     load_words(path.join(getcwd(), "./backend/utils/data/wlist_match1.txt")).union(
-        #         load_words(path.join(getcwd(), "./backend/utils/data/personal_whitelist.txt"))))
-        all_english_words = load_words(
-            path.join(getcwd(), "./backend/utils/data/wlist_match2.txt")).union(
-            load_words(path.join(getcwd(), "./backend/utils/data/wlist_match1.txt")).union(
-                load_words(path.join(getcwd(), "./backend/utils/data/personal_whitelist.txt"))))
-        chunks = list(chunked(all_english_words, 10000))
+        added_words = load_words(
+            path.join(getcwd(), "./backend/utils/data/these_words_are_right.txt"))
+        chunks = list(chunked(added_words, 10000))
         for chunk in chunks:
             redis_client.sadd('dict:all', *chunk)
     return redis_client.scard('dict:all')
 
 
 def seed_redis_site_blacklist(override=False):
-    from backend.celery_worker import hello
     print('----------------------------------------------------------------------------')
     values = redis_client.scard('siteblacklist')
     if values < 2000 or override:
-        all_sites = load_words(path.join(getcwd(), "./backend/utils/data/wlist_match2.txt"))
+        all_sites = load_words(path.join(getcwd(), "./backend/utils/data/site_blacklist.txt"))
         redis_client.sadd('siteblacklist', *list(all_sites))
     return redis_client.scard('siteblacklist')

@@ -6,7 +6,7 @@ from ariadne.contrib.tracing.apollotracing import ApolloTracingExtension
 
 # Local Packages
 from backend.db import db as gino_db
-from backend.utils.redis_client.seed_redis import seed_redis_site_blacklist
+from backend.utils.redis_client.seed_redis import seed_redis_site_blacklist, seed_redis
 
 # For debugging:
 import uvicorn
@@ -47,7 +47,7 @@ middleware = [
                allow_credentials=[True])
 ]
 
-app = Starlette(debug=True, middleware=middleware, on_startup=[seed_redis_site_blacklist])
+app = Starlette(debug=True, middleware=middleware, on_startup=[seed_redis_site_blacklist, seed_redis])
 gino_db.init_app(app)
 
 # load_modules(app)

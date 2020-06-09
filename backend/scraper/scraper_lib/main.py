@@ -70,22 +70,30 @@ async def scrape(url: str, netloc: str):
     redis_client.sadd(f'allsites:queue', netloc)
 
     wrong_words = load_words(path.join(getcwd(), "./backend/utils/data/these_words_are_wrong.txt"))
-    correct_words = load_words(path.join(getcwd(), "./backend/utils/data/these_words_are_right.txt"))
     spell = SpellChecker()
-    spell.word_frequency.load_words([*correct_words])
-    spell.word_frequency.remove_words([*wrong_words])
+    correct_words_set = redis_client.smembers('dict:all')
+    correct_words = []
+    for word in correct_words_set:
+        correct_words.append(word.decode('utf-8'))
+
+    spell.word_frequency.load_words(correct_words)
+    spell.word_frequency.remove_words(wrong_words)
 
     async with aiohttp.ClientSession(
             connector=aiohttp.TCPConnector(keepalive_timeout=10, limit=1, verify_ssl=False)) as open_session:
-        
-        try:
-            task = asyncio.create_task(
-                parse_page(redis_client, f"https://{netloc}{url_path}", open_session, netloc=netloc,
-                           spell_checker=spell))
-            await task
-        except Exception as e:
-            print('faile on main block')
-            print(e)
+
+        # try:
+        #     task = asyncio.create_task(
+        #         parse_page(redis_client, f"https://{netloc}{url_path}", open_session, netloc=netloc,
+        #                    spell_checker=spell))
+        #     await task
+        # except Exception as e:
+        #     print('faile on main block')
+        #     print(e)
+        task = asyncio.create_task(
+            parse_page(redis_client, f"https://{netloc}{url_path}", open_session, netloc=netloc,
+                       spell_checker=spell))
+        await task
         print('final block running')
         redis_client.srem('allsites:queue', netloc)
         print('im deleting EVERYTHING')
