@@ -8,7 +8,6 @@ def add_set_to_redis(netloc: str, url: str, visible_words: str, wrong_words_set_
     """
     I'm sure this function is doing too much... probably should have returned items to add later
     """
-    print('adding to redis')
     path = urlparse(url).path
 
     if wrong_words_set_clean in [{''}, {""}]:
@@ -17,7 +16,7 @@ def add_set_to_redis(netloc: str, url: str, visible_words: str, wrong_words_set_
                           "wrongWord": "None",
                           "contextOfMispelling": "None",
                           "correction": "None"}
-        redis_client.publish(f'{netloc}:errors', json.dumps(redis_response))
+        redis_client.publish(f'{netloc}:errors', json.dumps(redis_response))  # equipomedia.com:errors
         return
 
     for wrong_word in wrong_words_set_clean:
@@ -37,3 +36,4 @@ def add_set_to_redis(netloc: str, url: str, visible_words: str, wrong_words_set_
                               "contextOfMispelling": context_of_mispelling,
                               "correction": spell_checker.correction(wrong_word)}
             redis_client.publish(f'{netloc}:errors', json.dumps(redis_response))
+            redis_client.lpush(f'{netloc}:errorcount', 1)
