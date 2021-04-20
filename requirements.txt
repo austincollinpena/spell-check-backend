@@ -4,7 +4,7 @@ amqp==2.6.0
 aredis==1.1.8
 ariadne==0.11.0
 async-timeout==3.0.1
-asyncpg==0.20.1
+asyncpg==0.21.0
 atomicwrites==1.4.0
 attrs==19.3.0
 Authlib==0.14.3
