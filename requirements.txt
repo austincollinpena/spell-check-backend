@@ -69,7 +69,7 @@ starlette==0.13.4
 starlette-authlib==0.1.6
 starlette-context==0.2.2
 typing-extensions==3.7.4.2
-urllib3==1.25.9
+urllib3==1.26.5
 uvicorn==0.11.5
 validator-collection==1.4.1
 vine==1.3.0
